@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob: http://127.0.0.1:* piphin:; media-src 'self' blob: http://127.0.0.1:*; connect-src 'self' blob: http://127.0.0.1:*; style-src 'self' 'unsafe-inline' piphin:; script-src 'self'; worker-src 'self' blob:; font-src 'self' data: piphin:">
+  <title>Piphin Vídeo</title>
+  <link rel="stylesheet" href="piphin://ui/kit.css">
+  <link rel="stylesheet" href="icons.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="in-hub">
+  <header class="topbar">
+    <div class="brand"><i class="i i-clapperboard"></i>Vídeo</div>
+    <nav class="menus" id="menus"></nav>
+    <div class="pname" id="projName"></div>
+    <div class="grow"></div>
+    <button class="btn sm icon ghost" data-cmd="undo" title="Desfazer (Ctrl+Z)"><i class="i i-undo-2"></i></button>
+    <button class="btn sm icon ghost" data-cmd="redo" title="Refazer (Ctrl+Shift+Z)"><i class="i i-redo-2"></i></button>
+    <button class="btn sm primary" data-cmd="export"><i class="i i-download"></i>Exportar</button>
+  </header>
+
+  <div class="main">
+    <aside class="bin">
+      <div class="bin-head"><span>Mídia</span>
+        <div class="row-btns">
+          <button class="btn sm icon ghost" data-cmd="add-text" title="Texto"><i class="i i-type"></i></button>
+          <button class="btn sm icon ghost" data-cmd="add-color" title="Cor sólida"><i class="i i-square"></i></button>
+          <button class="btn sm" data-cmd="import"><i class="i i-import"></i>Importar</button>
+        </div>
+      </div>
+      <div class="bin-list" id="binList"></div>
+    </aside>
+
+    <section class="viewer">
+      <div class="screen" id="screen"><canvas id="preview"></canvas><div class="drop-hint" id="dropHint" hidden><i class="i i-import"></i><span>Solte para importar</span></div></div>
+      <div class="transport">
+        <span class="tc" id="tcNow">0:00.00</span>
+        <div class="grow"></div>
+        <button class="btn sm icon ghost" data-cmd="go-start" title="Início (Home)"><i class="i i-skip-back"></i></button>
+        <button class="btn sm icon ghost" data-cmd="frame-back" title="Quadro anterior (←)"><i class="i i-step-back"></i></button>
+        <button class="btn icon play" data-cmd="play" id="playBtn" title="Tocar / pausar (Espaço)"><i class="i i-play"></i></button>
+        <button class="btn sm icon ghost" data-cmd="frame-fwd" title="Próximo quadro (→)"><i class="i i-step-forward"></i></button>
+        <button class="btn sm icon ghost" data-cmd="go-end" title="Fim (End)"><i class="i i-skip-forward"></i></button>
+        <div class="grow"></div>
+        <span class="tc dim" id="tcTotal">0:00.00</span>
+      </div>
+    </section>
+
+    <aside class="inspector" id="inspector"></aside>
+  </div>
+
+  <section class="timeline">
+    <div class="tl-bar">
+      <button class="btn sm ghost" data-cmd="split" title="Dividir no cursor (S)"><i class="i i-scissors"></i>Dividir</button>
+      <button class="btn sm ghost" data-cmd="delete" title="Apagar (Delete)"><i class="i i-trash-2"></i></button>
+      <button class="btn sm ghost" data-cmd="duplicate" title="Duplicar (Ctrl+D)"><i class="i i-copy"></i></button>
+      <button class="btn sm ghost" data-cmd="snap" id="snapBtn" title="Ímã: encaixar nos clipes e no cursor (N)"><i class="i i-magnet"></i></button>
+      <span class="sep"></span>
+      <button class="btn sm ghost" data-cmd="add-vtrack" title="Nova faixa de vídeo"><i class="i i-plus"></i><i class="i i-film"></i></button>
+      <button class="btn sm ghost" data-cmd="add-atrack" title="Nova faixa de áudio"><i class="i i-plus"></i><i class="i i-music"></i></button>
+      <div class="grow"></div>
+      <span class="status" id="status"></span>
+      <button class="btn sm icon ghost" data-cmd="tl-zoom-out" title="Afastar (-)"><i class="i i-zoom-out"></i></button>
+      <input type="range" id="tlZoom" min="0" max="100" value="40" title="Zoom da linha do tempo (Ctrl + rodinha)">
+      <button class="btn sm icon ghost" data-cmd="tl-zoom-in" title="Aproximar (+)"><i class="i i-zoom-in"></i></button>
+      <button class="btn sm ghost" data-cmd="tl-fit" title="Ver tudo (Shift+Z)"><i class="i i-maximize"></i></button>
+    </div>
+    <div class="tl-scroll" id="tlScroll">
+      <div class="tl-inner" id="tlInner">
+        <canvas class="tl-ruler" id="tlRuler"></canvas>
+        <div class="tl-rows" id="tlRows"></div>
+        <div class="tl-playhead" id="tlPlayhead"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="menu-pop" id="menuPop" hidden></div>
+  <div id="modal" class="modal" hidden><div class="modal-box" id="modalBox"></div></div>
+  <div id="toasts" class="toasts"></div>
+
+  <script src="vendor/mediabunny.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/media.js"></script>
+  <script src="js/preview.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>

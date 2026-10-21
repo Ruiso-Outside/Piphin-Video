@@ -1,0 +1,328 @@
+{
+  "id": "video",
+  "name": "Piphin Vídeo",
+  "version": "0.0.0",
+  "description": "Editor de vídeo completo: linha do tempo com várias faixas, cortes, textos, efeitos, transições e exportação MP4.",
+  "main": "backend.js",
+  "ui": "web/index.html",
+  "icon": "icons/video.png",
+  "accent": "#f43f5e",
+  "minHub": "1.4.0",
+  "reservedKeys": [
+    "ctrl+1",
+    "ctrl+2",
+    "ctrl+3"
+  ],
+  "tools": [
+    {
+      "name": "project_info",
+      "title": "Ver o projeto",
+      "readOnly": true,
+      "description": "Mostra o projeto aberto no Piphin Vídeo: resolução, duração, mídias importadas e os clipes de cada faixa (com ids, início, fim e tempo de origem).",
+      "input": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "import_media",
+      "title": "Importar mídia",
+      "description": "Importa vídeos, áudios ou imagens do disco para o projeto e (por padrão) coloca no fim da linha do tempo.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Caminho completo do arquivo"
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "add_to_timeline": {
+            "type": "boolean",
+            "description": "Colocar na linha do tempo (padrão true)"
+          }
+        }
+      }
+    },
+    {
+      "name": "add_clip",
+      "title": "Colocar clipe na linha do tempo",
+      "description": "Coloca uma mídia já importada na linha do tempo. Tempos em segundos.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "type": "string",
+            "description": "Nome ou id da mídia (veja project_info)"
+          },
+          "start": {
+            "type": "number",
+            "description": "Onde começa na linha do tempo (padrão: no fim)"
+          },
+          "from": {
+            "type": "number",
+            "description": "Início dentro do arquivo (padrão 0)"
+          },
+          "to": {
+            "type": "number",
+            "description": "Fim dentro do arquivo (padrão: até o fim)"
+          },
+          "track": {
+            "type": "number",
+            "description": "Faixa (1 = primeira de vídeo, ou de áudio para áudios)"
+          }
+        },
+        "required": [
+          "media"
+        ]
+      }
+    },
+    {
+      "name": "edit_clip",
+      "title": "Editar clipe",
+      "description": "Muda um clipe: posição na linha do tempo, corte, velocidade, volume, esmaecer, efeitos, posição e escala na tela.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "clip": {
+            "type": "string",
+            "description": "id do clipe"
+          },
+          "start": {
+            "type": "number",
+            "description": "segundos"
+          },
+          "from": {
+            "type": "number",
+            "description": "início no arquivo"
+          },
+          "to": {
+            "type": "number",
+            "description": "fim no arquivo"
+          },
+          "speed": {
+            "type": "number",
+            "description": "0.25 a 4"
+          },
+          "volume": {
+            "type": "number",
+            "description": "0 a 200 (%)"
+          },
+          "mute": {
+            "type": "boolean"
+          },
+          "fade_in": {
+            "type": "number",
+            "description": "segundos"
+          },
+          "fade_out": {
+            "type": "number",
+            "description": "segundos"
+          },
+          "brightness": {
+            "type": "number",
+            "description": "-100 a 100"
+          },
+          "contrast": {
+            "type": "number",
+            "description": "-100 a 100"
+          },
+          "saturation": {
+            "type": "number",
+            "description": "-100 a 100"
+          },
+          "blur": {
+            "type": "number",
+            "description": "0 a 50 px"
+          },
+          "grayscale": {
+            "type": "boolean"
+          },
+          "scale": {
+            "type": "number",
+            "description": "% (100 = preencher o quadro)"
+          },
+          "x": {
+            "type": "number",
+            "description": "deslocamento horizontal em % do quadro"
+          },
+          "y": {
+            "type": "number",
+            "description": "deslocamento vertical em %"
+          },
+          "rotation": {
+            "type": "number",
+            "description": "graus"
+          },
+          "opacity": {
+            "type": "number",
+            "description": "0 a 100"
+          }
+        },
+        "required": [
+          "clip"
+        ]
+      }
+    },
+    {
+      "name": "split_clip",
+      "title": "Cortar clipe em dois",
+      "description": "Divide um clipe (ou todos os clipes) num instante da linha do tempo.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "number",
+            "description": "segundos na linha do tempo"
+          },
+          "clip": {
+            "type": "string",
+            "description": "id do clipe (sem isso, corta todos nesse instante)"
+          }
+        },
+        "required": [
+          "time"
+        ]
+      }
+    },
+    {
+      "name": "delete_clip",
+      "title": "Apagar clipe",
+      "description": "Remove um clipe da linha do tempo. ripple=true puxa os clipes seguintes para fechar o buraco.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "clip": {
+            "type": "string"
+          },
+          "ripple": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "clip"
+        ]
+      }
+    },
+    {
+      "name": "add_text",
+      "title": "Adicionar texto ou legenda",
+      "description": "Coloca um texto (título ou legenda) na linha do tempo, numa faixa de vídeo acima das outras.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "start": {
+            "type": "number",
+            "description": "segundos (padrão: posição atual)"
+          },
+          "duration": {
+            "type": "number",
+            "description": "segundos (padrão 3)"
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "top",
+              "center",
+              "bottom"
+            ]
+          },
+          "size": {
+            "type": "number",
+            "description": "% da altura do quadro (padrão 7)"
+          },
+          "color": {
+            "type": "string"
+          },
+          "box": {
+            "type": "boolean",
+            "description": "Fundo escuro atrás do texto"
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
+    {
+      "name": "set_project",
+      "title": "Configurar o projeto",
+      "description": "Muda a resolução, a taxa de quadros ou a cor de fundo do projeto.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "width": {
+            "type": "number",
+            "description": "px"
+          },
+          "height": {
+            "type": "number",
+            "description": "px"
+          },
+          "fps": {
+            "type": "number",
+            "description": "quadros por segundo"
+          },
+          "preset": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:5",
+              "4k"
+            ]
+          },
+          "background": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "export_video",
+      "title": "Exportar vídeo",
+      "description": "Exporta o projeto para um arquivo de vídeo (MP4 H.264 + AAC, ou WebM). Sem path, salva em VídeosPiphin Vídeo. Pode levar alguns minutos.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "mp4",
+              "webm"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "very-high"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "undo",
+      "title": "Desfazer",
+      "description": "Desfaz a última alteração no Piphin Vídeo.",
+      "input": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ]
+}

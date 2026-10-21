@@ -1,0 +1,17 @@
+{
+  "name": "piphin-video",
+  "productName": "Piphin Vídeo",
+  "version": "1.0.0",
+  "description": "Piphin Vídeo: editor de vídeo completo, módulo do Piphin Hub",
+  "author": "Piphin Studio",
+  "private": true,
+  "scripts": {
+    "vendor": "node scripts/vendor.js",
+    "icons": "node scripts/make-icons.js",
+    "icon": "node scripts/run-electron.js scripts/make-icon.js",
+    "module": "node scripts/make-module.js"
+  },
+  "devDependencies": {
+    "mediabunny": "1.62.0"
+  }
+}
