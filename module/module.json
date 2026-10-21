@@ -289,7 +289,7 @@
     {
       "name": "export_video",
       "title": "Exportar vídeo",
-      "description": "Exporta o projeto para um arquivo de vídeo (MP4 H.264 + AAC, ou WebM). Sem path, salva em VídeosPiphin Vídeo. Pode levar alguns minutos.",
+      "description": "Exporta o projeto para um arquivo de vídeo (MP4 H.264 + AAC, ou WebM). Sem path, salva em Vídeos\\Piphin Vídeo. Pode levar alguns minutos.",
       "input": {
         "type": "object",
         "properties": {
