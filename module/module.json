@@ -8,6 +8,7 @@
   "icon": "icons/video.png",
   "accent": "#f43f5e",
   "minHub": "1.4.0",
+  "opens": ["video", "audio", "image"],
   "reservedKeys": [
     "ctrl+1",
     "ctrl+2",

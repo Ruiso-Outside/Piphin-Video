@@ -60,7 +60,7 @@
         <div class="th" style="${th ? `background-image:url('${th}')` : ""}">${th ? "" : `<i class="i i-${m.kind === "audio" ? "music" : m.kind === "image" ? "image" : "film"}"></i>`}</div>
         ${m.kind !== "image" && m.duration ? `<span class="dur">${tc(m.duration, 0)}</span>` : ""}
         <div class="nm">${esc(m.name)}</div>
-        <div class="meta"><span>${m.kind === "audio" ? "Áudio" : m.width ? `${m.width}×${m.height}` : ""}</span><span>${m.kind === "video" && m.hasAudio ? "♪" : ""}</span></div></div>`;
+        <div class="meta"><span>${m.kind === "audio" ? "Áudio" : m.width ? `${m.width}×${m.height}` : ""}</span><span>${m.license ? `<b class="lic" title="${esc(m.credit || "")}">${esc(m.license)}</b>` : ""}${m.kind === "video" && m.hasAudio ? "♪" : ""}</span></div></div>`;
     }).join("");
   }
   $("#binList").addEventListener("dragstart", (e) => { const it = e.target.closest("[data-media]"); if (it) { e.dataTransfer.setData("application/x-pv-media", it.dataset.media); e.dataTransfer.effectAllowed = "copy"; } });
@@ -91,6 +91,8 @@
   async function importFiles(list) {
     let n = 0;
     for (const f of list) {
+      // licença que não deixa usar em vídeos (Piphin Música avisa): a pessoa decide
+      if (f.videoOk === false && (await confirmBox("Licença não permite vídeos", `A licença de "${f.title || f.name}" (${f.license || "sem licença livre"}) não permite usar a música em vídeos publicados. Usar mesmo assim (só para você)?`, ["Usar mesmo assim", "Pular"])) !== 0) continue;
       try { await (f instanceof File ? lib.fromFile(f) : lib.add(f)); n++; } catch (e) { PV.toast(`${f.name}: ${e.message}`, "err"); }
     }
     if (n) { S.dirty = true; PV.emit("media"); PV.toast(n === 1 ? "Mídia importada" : `${n} mídias importadas`, "ok"); }
@@ -269,6 +271,7 @@
     "open-project": guard(async () => { if (!(await leaveOk())) return; const r = await call("open-project-dialog"); if (r) loadProject(r); }),
     save: guard(() => saveProject(false)), "save-as": guard(() => saveProject(true)),
     import: guard(async () => { const list = await call("import-dialog"); if (list && list.length) await importFiles(list); }),
+    library: guard(async () => { const list = await call("library-pick"); if (list && list.length) await importFiles(list); }),
     export: () => exportDialog(),
     undo: () => { const l = PV.undo(); if (l) PV.status("Desfeito: " + l); }, redo: () => { const l = PV.redo(); if (l) PV.status("Refeito: " + l); },
     play: () => PV.preview.toggle(), "go-start": () => PV.preview.seek(0), "go-end": () => PV.preview.seek(PV.duration()),
@@ -373,6 +376,38 @@
       runExport(S.exportPrefs).catch(() => {});
     };
   }
+  // músicas com licença Creative Commons pedem crédito: depois de exportar, o texto pronto para a descrição do vídeo
+  function creditsText() {
+    const P = PV.P();
+    return [...new Set(P.media.filter((m) => m.credit && P.clips.some((c) => c.media === m.id)).map((m) => m.credit))];
+  }
+  function showCredits() {
+    const list = creditsText();
+    if (!list.length) return;
+    const text = "Músicas:\n" + list.map((c) => "• " + c).join("\n");
+    openModal(`<h3>Créditos das músicas</h3><p>A licença destas músicas pede o crédito. Cole este texto na descrição do vídeo:</p>
+      <textarea id="crText" readonly rows="${Math.min(8, list.length + 2)}" style="width:100%;resize:vertical">${esc(text)}</textarea>
+      <div class="modal-actions"><button class="btn" data-cl>Fechar</button><button class="btn primary" data-cp><i class="i i-copy"></i>Copiar</button></div>`);
+    box.querySelector("[data-cl]").onclick = () => closeModal();
+    box.querySelector("[data-cp]").onclick = () => {
+      const ta = $("#crText"); ta.select();
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).catch(() => document.execCommand("copy"));
+      PV.toast("Créditos copiados", "ok");
+    };
+  }
+
+  // Mídia do Hub: o que vem de outro módulo ("Abrir no Piphin Vídeo")
+  piphin.on("open-file", guard(async (info) => {
+    const first = !PV.P().clips.length;
+    const n = await importFiles([info]);
+    if (!n) return;
+    const m = PV.P().media.find((x) => x.path && x.path.toLowerCase() === info.path.toLowerCase());
+    // projeto vazio: já vai para a linha do tempo
+    if (m && first) PV.edit("Adicionar clipe", () => { const c = PV.ops.addClip(m); S.selected.clear(); S.selected.add(c.id); });
+    PV.toast(`"${info.title || info.name}" chegou do ${info.from || "Hub"}`, "ok");
+  }));
+  call("hub-features").then((f) => { if (f && f.library) $("#libBtn").hidden = false; }).catch(() => {});
+
   async function runExport(opts) {
     PV.preview.pause();
     const signal = { canceled: false };
@@ -391,6 +426,7 @@
       } });
       closeModal();
       if (r) PV.toast(`Vídeo exportado: ${r.name} (${fmt(r.size / 1048576, 1)} MB)`, "ok", { label: "Mostrar", run: () => call("show-item", r.path) });
+      if (r) showCredits();
       else PV.toast("Exportação cancelada", "info");
       return r;
     } catch (e) {

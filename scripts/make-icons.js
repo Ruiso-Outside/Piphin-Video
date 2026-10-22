@@ -17,6 +17,7 @@ sliders-horizontal sparkles wand-sparkles move rotate-cw maximize gauge audio-li
 arrow-left-right repeat square circle rectangle-horizontal rectangle-vertical monitor smartphone info keyboard clipboard-paste video mic
 sun contrast palette droplet blend bot list grip-vertical timer clock upload file-video file-audio file-image import square-split-horizontal
 align-left align-center align-right bold italic text-cursor-input fullscreen scaling crop flip-horizontal-2 flip-vertical-2 circle-dashed
+library badge-info
 `.split(/\s+/).filter(Boolean);
 
 const css = [`/* Piphin Vídeo · ícones (Lucide ${require(path.join(LUCIDE, "package.json")).version}, ISC) · gerado por scripts/make-icons.js */`,

@@ -142,3 +142,4 @@ body { display: flex; flex-direction: column; }
 .note { font-size: 12px; color: var(--p-text-3); }
 .toast.warn::before { background: var(--p-warn); }
 .toast.info::before { background: var(--p-info); }
+.mitem .meta .lic { color: var(--p-ok); font-weight: 600; margin-right: 4px; }

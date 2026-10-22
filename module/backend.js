@@ -2,7 +2,8 @@
 //   - um servidor de mídia local (127.0.0.1, endereço com token): a tela toca e decodifica os vídeos do disco
 //     por HTTP com "Range", sem carregar arquivos de vários GB na memória;
 //   - abrir e salvar projetos, a gravação do vídeo exportado (em pedaços) e os arquivos recentes;
-//   - a ponte das ferramentas da IA (Piphin LLM).
+//   - a ponte das ferramentas da IA (Piphin LLM);
+//   - a Mídia do Hub (1.7.0+): usar músicas, sons, prints e gravações dos outros módulos, e os vídeos exportados aparecem lá.
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -78,6 +79,27 @@ exports.activate = (ctx) => {
     return out;
   });
   ctx.handle("media", (file) => media(file));
+
+  // ---------------------------------------------------------------- Mídia do Hub (Hub 1.7.0+; no Hub antigo, ctx.host.library não existe)
+  const lib = ctx.host.library || null;
+  // o que veio da Mídia leva junto o crédito e a licença (músicas do Piphin Música)
+  const fromLibrary = async (it) => ({ ...(await media(it.path)), title: it.title, from: it.byName, credit: it.credit, license: it.license, videoOk: it.videoOk });
+  ctx.handle("hub-features", () => ({ library: !!lib }));
+  ctx.handle("library-pick", async () => {
+    if (!lib) throw new Error("Atualize o Piphin Hub para usar a Mídia");
+    const items = await lib.pick({ kinds: ["video", "audio", "image"], multi: true, title: "Usar da Mídia" });
+    const out = [];
+    for (const it of items) { try { out.push(await fromLibrary(it)); } catch (e) { ctx.log("mídia", e); } }
+    return out;
+  });
+  // "Abrir no Piphin Vídeo" de outro módulo (ex.: uma gravação do Piphin Captura)
+  ctx.host.on("open-file", async (f) => {
+    try {
+      const m = await fromLibrary(f);
+      await ensureUi();
+      ctx.emit("open-file", { ...m, from: f.fromName });
+    } catch (e) { ctx.log("abrir arquivo", e); }
+  });
   ctx.handle("locate-dialog", async (name) => {
     const list = await ctx.host.openDialog({ title: `Onde está "${name}"?`, properties: ["openFile"] });
     return list && list[0] ? media(list[0]) : null;
@@ -147,6 +169,7 @@ exports.activate = (ctx) => {
     if (!ok) { fs.rmSync(e.tmp, { force: true }); return null; }
     fs.rmSync(e.file, { force: true });
     fs.renameSync(e.tmp, e.file);
+    if (lib) lib.add({ path: e.file, kind: "video", title: path.basename(e.file).replace(/\.[^.]+$/, ""), sub: "Vídeo editado" }).catch((err) => ctx.log("mídia", err));
     return { path: e.file, name: path.basename(e.file), size: fs.statSync(e.file).size };
   });
   ctx.handle("show-item", (file) => ctx.host.showItem(file));

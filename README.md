@@ -12,6 +12,13 @@ Editor de vídeo completo, módulo do [Piphin Hub](https://github.com/Ruiso-Outs
 - **Projeto** salvo em `.pvid`, com as mídias por caminho (e "Localizar" para arquivos movidos)
 - **IA**: com o Piphin LLM, a IA importa mídias, corta, divide, apaga, edita clipes, escreve textos, muda o formato e exporta
 
+## Mídia do Hub
+Com o Piphin Hub 1.7.0 ou mais novo:
+- **Usar da Mídia** (botão ao lado de Importar): músicas baixadas no Piphin Música, sons e efeitos do Piphin Som, prints e gravações do Piphin Captura e imagens do Piphin Foto.
+- **Abrir no Piphin Vídeo** em qualquer módulo (ou na tela Mídia do Hub): o arquivo entra no projeto; num projeto vazio, já vai para a linha do tempo.
+- **Créditos**: músicas Creative Commons pedem crédito; ao exportar, aparece o texto pronto para colar na descrição do vídeo. Música cuja licença não permite vídeos pede confirmação.
+- Os vídeos exportados aparecem na Mídia.
+
 ## Estrutura
 
 - `module/`: `module.json` (manifesto e ferramentas da IA) e `backend.js` (servidor de mídia local com Range, projetos, gravação da exportação e ponte da IA)

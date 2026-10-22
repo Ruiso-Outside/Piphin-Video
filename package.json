@@ -1,7 +1,7 @@
 {
   "name": "piphin-video",
   "productName": "Piphin Vídeo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Piphin Vídeo: editor de vídeo completo, módulo do Piphin Hub",
   "author": "Piphin Studio",
   "private": true,

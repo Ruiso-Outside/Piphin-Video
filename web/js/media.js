@@ -85,6 +85,9 @@ PV.mediaLib = (() => {
     let m = blob ? null : P.media.find((x) => x.path && x.path.toLowerCase() === (info.path || "").toLowerCase());
     if (m) { Object.assign(m, { url: info.url, missing: false }); return m; }
     m = { id: PV.uid("m"), name: info.name, path: info.path || null, url: info.url || null, kind: info.kind, size: info.size };
+    // da Mídia do Hub: crédito e licença (para lembrar na exportação)
+    for (const k of ["credit", "license", "from"]) if (info[k]) m[k] = info[k];
+    if (info.videoOk === false) m.videoOk = false;
     if (blob) blobs.set(m.id, blob);
     await probe(m);
     P.media.push(m);
