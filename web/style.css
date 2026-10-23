@@ -47,7 +47,7 @@ body { display: flex; flex-direction: column; }
 .bin-empty .i { font-size: 26px; display: block; margin: 0 auto 8px; color: var(--vx); }
 
 .viewer { flex: 1; min-width: 0; display: flex; flex-direction: column; background: #07060b; }
-.screen { position: relative; flex: 1; min-height: 0; display: grid; place-items: center; padding: 14px; }
+.screen { position: relative; flex: 1; min-height: 0; overflow: hidden; display: grid; place-items: center; padding: 14px; }
 #preview { display: block; background: #000; box-shadow: 0 10px 40px rgba(0, 0, 0, .6); border-radius: 4px; }
 .transport { display: flex; align-items: center; gap: 4px; height: 50px; padding: 0 14px; border-top: 1px solid var(--p-line); background: var(--p-bg-2); flex: none; }
 .transport .tc { font: 600 14px var(--p-mono); color: #fff; min-width: 110px; }

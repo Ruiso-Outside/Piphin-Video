@@ -81,8 +81,10 @@ PV.preview = (() => {
 
   // ---------------------------------------------------------------- desenho
   function fitCanvas() {
-    const box = canvas.parentElement.getBoundingClientRect(), P = PV.P(), dpr = window.devicePixelRatio || 1;
-    const k = Math.min(box.width / P.w, box.height / P.h);
+    // área útil da tela, sem o recuo (com ele o vídeo saía 28 px para o lado em janelas estreitas)
+    const el = canvas.parentElement, cs = getComputedStyle(el), P = PV.P(), dpr = window.devicePixelRatio || 1;
+    const bw = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight), bh = el.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    const k = Math.max(0.01, Math.min(bw / P.w, bh / P.h));
     const w = Math.max(2, Math.floor(P.w * k)), h = Math.max(2, Math.floor(P.h * k));
     canvas.style.width = w + "px"; canvas.style.height = h + "px";
     const pw = Math.round(w * dpr), ph = Math.round(h * dpr);
