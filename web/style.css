@@ -11,7 +11,7 @@ body { display: flex; flex-direction: column; }
 .brand { display: flex; align-items: center; gap: 7px; font: 700 14px var(--p-font-display); color: #fff; margin-right: 6px; }
 .brand .i { color: var(--vx); font-size: 18px; }
 .menus { display: flex; gap: 1px; }
-.menus button { height: 30px; padding: 0 10px; border: 0; border-radius: 7px; background: transparent; color: var(--p-text-2); font: 500 13px var(--p-font); cursor: pointer; }
+.menus button { height: 30px; padding: 0 10px; border: 0; border-radius: 7px; background: transparent; color: var(--p-text-2); font: 500 13px var(--p-font); cursor: pointer; white-space: nowrap; }
 .menus button:hover, .menus button.open { background: var(--p-hover); color: var(--p-text); }
 .pname { margin-left: 12px; color: var(--p-text-3); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pname b { color: var(--p-text-2); font-weight: 600; }
@@ -31,6 +31,7 @@ body { display: flex; flex-direction: column; }
 .bin { width: var(--bin-w); flex: none; display: flex; flex-direction: column; border-right: 1px solid var(--p-line); background: var(--p-bg-2); min-height: 0; }
 .bin-head, .insp-head { display: flex; align-items: center; justify-content: space-between; height: 40px; padding: 0 8px 0 14px; flex: none;
   font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--p-text-3); font-weight: 600; }
+.bin-head > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; margin-right: 6px; } /* outros idiomas: o título não quebra */
 .row-btns { display: flex; gap: 2px; align-items: center; }
 .bin-list { flex: 1; overflow-y: auto; padding: 0 8px 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-content: start; }
 .mitem { position: relative; border-radius: 10px; overflow: hidden; background: var(--p-surface-1); border: 1px solid var(--p-line); cursor: grab; }
