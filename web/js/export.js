@@ -53,8 +53,10 @@ PV.exporter = (() => {
     const missing = P.clips.map((c) => PV.media(c.media)).filter((m) => m && m.missing);
     if (missing.length) throw new Error(`Mídia não encontrada: ${missing[0].name}. Localize o arquivo antes de exportar.`);
     const W = even(P.w * scale), H = even(P.h * scale), FPS = fps || P.fps, frames = Math.max(1, Math.ceil(dur * FPS - 1e-6));
-    const vcodec = format === "webm" ? "vp9" : "avc", acodec = format === "webm" ? "opus" : "aac";
-    if (!(await MB.canEncodeVideo(vcodec, { width: W, height: H }))) throw new Error(`Este PC não consegue codificar ${vcodec.toUpperCase()} em ${W}×${H}`);
+    const vcodec = format === "webm" ? "vp9" : "avc";
+    // MP4 com AAC; no Linux o Chromium não tem codificador AAC, então o som vai em Opus (o VLC, o navegador e os apps de vídeo tocam)
+    const acodec = format === "webm" ? "opus" : (await MB.canEncodeAudio("aac", { numberOfChannels: 2, sampleRate: 48000 })) ? "aac" : "opus";
+    if (!(await MB.canEncodeVideo(vcodec, { width: W, height: H }))) throw new Error(`Este PC não consegue codificar ${vcodec.toUpperCase()} em ${W}×${H}` + (vcodec === "avc" ? ". Exporte em WebM." : ""));
     const audioClips = P.clips.filter((c) => PV.hasAudio(c) && !c.muted && !(PV.track(c.track) || {}).muted && (c.volume ?? 1) > 0);
 
     const ext = format === "webm" ? "webm" : "mp4";
