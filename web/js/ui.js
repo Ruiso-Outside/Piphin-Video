@@ -404,7 +404,7 @@
     const m = PV.P().media.find((x) => x.path && x.path.toLowerCase() === info.path.toLowerCase());
     // projeto vazio: já vai para a linha do tempo
     if (m && first) PV.edit("Adicionar clipe", () => { const c = PV.ops.addClip(m); S.selected.clear(); S.selected.add(c.id); });
-    PV.toast(`"${info.title || info.name}" chegou do ${info.from || "Hub"}`, "ok");
+    PV.toast(`"${info.title || info.name}" chegou do ${info.from || "Central"}`, "ok");
   }));
   call("hub-features").then((f) => { if (f && f.library) $("#libBtn").hidden = false; }).catch(() => {});
 

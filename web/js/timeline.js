@@ -71,7 +71,7 @@ PV.timeline = (() => {
     const g = ruler.getContext("2d");
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.clearRect(0, 0, w, RULER);
-    g.fillStyle = "#0d0c14"; g.fillRect(0, 0, w, RULER);
+    g.fillStyle = "#09090a"; g.fillRect(0, 0, w, RULER);
     // passo das marcas conforme o zoom
     const steps = [1 / 30, 0.1, 0.2, 0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300, 600];
     const major = steps.find((s) => s * pps() >= 80) || 600, minor = steps.filter((s) => s < major && (major / s) % 1 < 1e-6 && s * pps() >= 8).pop() || major / 2;
@@ -82,10 +82,10 @@ PV.timeline = (() => {
       const isMajor = Math.abs(t / major - Math.round(t / major)) < 1e-6;
       g.fillStyle = isMajor ? "rgba(255,255,255,.45)" : "rgba(255,255,255,.18)";
       g.fillRect(Math.round(x), isMajor ? 12 : 18, 1, isMajor ? 14 : 8);
-      if (isMajor) { g.fillStyle = "#a9a6c2"; g.fillText(major < 1 ? tc(t, 2) : tc(t, 0), Math.round(x) + 4, 3); }
+      if (isMajor) { g.fillStyle = "#b9adad"; g.fillText(major < 1 ? tc(t, 2) : tc(t, 0), Math.round(x) + 4, 3); }
     }
-    g.fillStyle = "#0d0c14"; g.fillRect(0, 0, HEAD_W, RULER);
-    g.fillStyle = "#6f6b8b"; g.fillText(tc(S.time, 2), 12, 7);
+    g.fillStyle = "#09090a"; g.fillRect(0, 0, HEAD_W, RULER);
+    g.fillStyle = "#8d8080"; g.fillText(tc(S.time, 2), 12, 7);
   }
   function placeHead() {
     head.style.left = xOf(S.time) + "px";

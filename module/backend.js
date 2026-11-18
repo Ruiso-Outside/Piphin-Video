@@ -86,7 +86,7 @@ exports.activate = (ctx) => {
   const fromLibrary = async (it) => ({ ...(await media(it.path)), title: it.title, from: it.byName, credit: it.credit, license: it.license, videoOk: it.videoOk });
   ctx.handle("hub-features", () => ({ library: !!lib }));
   ctx.handle("library-pick", async () => {
-    if (!lib) throw new Error("Atualize o Piphin Hub para usar a Mídia");
+    if (!lib) throw new Error("Atualize a Arasaka Central para usar a Mídia");
     const items = await lib.pick({ kinds: ["video", "audio", "image"], multi: true, title: "Usar da Mídia" });
     const out = [];
     for (const it of items) { try { out.push(await fromLibrary(it)); } catch (e) { ctx.log("mídia", e); } }
@@ -107,12 +107,12 @@ exports.activate = (ctx) => {
 
   // ---------------------------------------------------------------- projetos
   ctx.handle("open-project-dialog", async () => {
-    const list = await ctx.host.openDialog({ title: "Abrir projeto", properties: ["openFile"], filters: [{ name: "Projeto do Piphin Vídeo", extensions: ["pvid"] }] });
+    const list = await ctx.host.openDialog({ title: "Abrir projeto", properties: ["openFile"], filters: [{ name: "Projeto do Arasaka Braindance", extensions: ["pvid"] }] });
     return list && list[0] ? openProject(list[0]) : null;
   });
   async function openProject(file) {
     const project = JSON.parse(fs.readFileSync(file, "utf8"));
-    if (!project || project.schema !== 1) throw new Error("Projeto do Piphin Vídeo inválido");
+    if (!project || project.schema !== 1) throw new Error("Projeto do Arasaka Braindance inválido");
     // cada mídia ganha um endereço novo; as que sumiram ficam marcadas para a pessoa localizar
     for (const m of project.media || []) {
       try { Object.assign(m, await media(m.path)); m.missing = false; } catch { m.missing = true; m.url = null; }
@@ -124,7 +124,7 @@ exports.activate = (ctx) => {
   ctx.handle("save-project", async ({ text, path: file, suggested }) => {
     if (!file) {
       fs.mkdirSync(videosDir(), { recursive: true });
-      file = await ctx.host.saveDialog({ title: "Salvar projeto", defaultPath: path.join(videosDir(), suggested || "projeto.pvid"), filters: [{ name: "Projeto do Piphin Vídeo", extensions: ["pvid"] }] });
+      file = await ctx.host.saveDialog({ title: "Salvar projeto", defaultPath: path.join(videosDir(), suggested || "projeto.pvid"), filters: [{ name: "Projeto do Arasaka Braindance", extensions: ["pvid"] }] });
       if (!file) return null;
     }
     fs.writeFileSync(file, text);
@@ -180,13 +180,13 @@ exports.activate = (ctx) => {
   const readyWaiters = [], pending = new Map();
   let aiSeq = 0;
   ctx.handle("ui-ready", () => { uiReady = true; readyWaiters.splice(0).forEach((f) => f()); return true; });
-  ctx.handle("ui-unload", () => { uiReady = false; for (const p of pending.values()) p.reject(new Error("A tela do Piphin Vídeo foi fechada")); pending.clear(); return true; });
+  ctx.handle("ui-unload", () => { uiReady = false; for (const p of pending.values()) p.reject(new Error("A tela do Arasaka Braindance foi fechada")); pending.clear(); return true; });
   ctx.handle("ai-reply", (id, ok, data) => { const p = pending.get(id); if (p) { pending.delete(id); ok ? p.resolve(data) : p.reject(new Error(data)); } return true; });
   async function ensureUi() {
     if (uiReady) return;
     await ctx.host.focus().catch(() => {});
     await new Promise((resolve, reject) => {
-      const t = setTimeout(() => reject(new Error("A tela do Piphin Vídeo não abriu")), 20000);
+      const t = setTimeout(() => reject(new Error("A tela do Arasaka Braindance não abriu")), 20000);
       readyWaiters.push(() => { clearTimeout(t); resolve(); });
     });
   }
@@ -194,7 +194,7 @@ exports.activate = (ctx) => {
     await ensureUi();
     const id = ++aiSeq;
     return new Promise((resolve, reject) => {
-      const t = setTimeout(() => { pending.delete(id); reject(new Error("O Piphin Vídeo não respondeu")); }, timeout);
+      const t = setTimeout(() => { pending.delete(id); reject(new Error("O Arasaka Braindance não respondeu")); }, timeout);
       pending.set(id, { resolve: (v) => { clearTimeout(t); resolve(v); }, reject: (e) => { clearTimeout(t); reject(e); } });
       ctx.emit("ai-call", { id, name, args: args || {} });
     });
@@ -216,7 +216,7 @@ exports.activate = (ctx) => {
     let file = args.path ? String(args.path) : "";
     if (file && path.extname(file).toLowerCase() !== "." + format) file += "." + format;
     const r = await toUi("export_video", { format, quality: args.quality || "high", path: file || null, dir: videosDir() }, 6 * 60 * 60 * 1000);
-    ctx.host.notify("Piphin Vídeo", "A IA exportou o vídeo: " + r.path).catch(() => {});
+    ctx.host.notify("Arasaka Braindance", "A IA exportou o vídeo: " + r.path).catch(() => {});
     return r;
   });
 };

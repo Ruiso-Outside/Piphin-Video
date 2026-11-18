@@ -1,12 +1,12 @@
 {
   "id": "video",
-  "name": "Piphin Vídeo",
+  "name": "Arasaka Braindance",
   "version": "0.0.0",
   "description": "Editor de vídeo completo: linha do tempo com várias faixas, cortes, textos, efeitos, transições e exportação MP4.",
   "main": "backend.js",
   "ui": "web/index.html",
   "icon": "icons/video.png",
-  "accent": "#f43f5e",
+  "accent": "#ff0000",
   "minHub": "1.4.0",
   "opens": ["video", "audio", "image"],
   "reservedKeys": [
@@ -19,7 +19,7 @@
       "name": "project_info",
       "title": "Ver o projeto",
       "readOnly": true,
-      "description": "Mostra o projeto aberto no Piphin Vídeo: resolução, duração, mídias importadas e os clipes de cada faixa (com ids, início, fim e tempo de origem).",
+      "description": "Mostra o projeto aberto no Arasaka Braindance: resolução, duração, mídias importadas e os clipes de cada faixa (com ids, início, fim e tempo de origem).",
       "input": {
         "type": "object",
         "properties": {}
@@ -319,7 +319,7 @@
     {
       "name": "undo",
       "title": "Desfazer",
-      "description": "Desfaz a última alteração no Piphin Vídeo.",
+      "description": "Desfaz a última alteração no Arasaka Braindance.",
       "input": {
         "type": "object",
         "properties": {}
