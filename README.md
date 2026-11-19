@@ -1,6 +1,8 @@
-# Piphin Vídeo
+# Arasaka Braindance
 
-Editor de vídeo completo, módulo do [Piphin Hub](https://github.com/Ruiso-Outside/Piphin-Hub). Roda dentro do Hub (cerca de 300 KB), sem ffmpeg: decodifica e codifica pela placa de vídeo (WebCodecs).
+> Antes chamado **Piphin Vídeo**. Os arquivos, pastas e dados continuam com o nome antigo.
+
+Editor de vídeo completo, módulo do [Arasaka Central](https://github.com/Ruiso-Outside/ArasakaCentral). Roda dentro do Hub (cerca de 300 KB), sem ffmpeg: decodifica e codifica pela placa de vídeo (WebCodecs).
 
 - **Linha do tempo** com várias faixas de vídeo e de áudio: mover entre faixas, aparar as pontas, dividir (S), duplicar, apagar fechando o espaço, ímã, zoom
 - **Clipes** de vídeo, áudio, imagem, texto (títulos e legendas) e cor sólida
@@ -10,12 +12,12 @@ Editor de vídeo completo, módulo do [Piphin Hub](https://github.com/Ruiso-Outs
 - **Exportação** MP4 (H.264 + AAC) ou WebM (VP9 + Opus), em 100%, 75%, 66% ou 50%, gravada direto no disco
 - **Formatos de projeto**: 16:9, 9:16 (Reels/TikTok/Shorts), 1:1, 4:5, 4K; 24 a 60 quadros por segundo
 - **Projeto** salvo em `.pvid`, com as mídias por caminho (e "Localizar" para arquivos movidos)
-- **IA**: com o Piphin LLM, a IA importa mídias, corta, divide, apaga, edita clipes, escreve textos, muda o formato e exporta
+- **IA**: com o Arasaka Mikoshi, a IA importa mídias, corta, divide, apaga, edita clipes, escreve textos, muda o formato e exporta
 
 ## Mídia do Hub
-Com o Piphin Hub 1.7.0 ou mais novo:
-- **Usar da Mídia** (botão ao lado de Importar): músicas baixadas no Piphin Música, sons e efeitos do Piphin Som, prints e gravações do Piphin Captura e imagens do Piphin Foto.
-- **Abrir no Piphin Vídeo** em qualquer módulo (ou na tela Mídia do Hub): o arquivo entra no projeto; num projeto vazio, já vai para a linha do tempo.
+Com a Arasaka Central 1.7.0 ou mais novo:
+- **Usar da Mídia** (botão ao lado de Importar): músicas baixadas no Arasaka Radioport, sons e efeitos do Arasaka Synth, prints e gravações do Arasaka Scanner e imagens do Arasaka Optics.
+- **Abrir no Arasaka Braindance** em qualquer módulo (ou na tela Mídia do Hub): o arquivo entra no projeto; num projeto vazio, já vai para a linha do tempo.
 - **Créditos**: músicas Creative Commons pedem crédito; ao exportar, aparece o texto pronto para colar na descrição do vídeo. Música cuja licença não permite vídeos pede confirmação.
 - Os vídeos exportados aparecem na Mídia.
 
